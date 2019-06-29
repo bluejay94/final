@@ -44,8 +44,7 @@ def getBuildOrigin() {
 }
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 27
 
     sourceSets.main {
         jniLibs.srcDir 'src/main/libs' //set .so files location to libs instead of jniLibs
@@ -65,8 +64,8 @@ android {
 
     defaultConfig {
         applicationId "com.crea_si.eviacam.service"
-        minSdkVersion 16
-        targetSdkVersion 23
+        minSdkVersion 20
+        targetSdkVersion 27
 
         versionCode getVersionCode()
         versionName getVersionName()
@@ -136,12 +135,12 @@ android {
 
 
 dependencies {
-    compile project(':opencv')
-    compile project(':input_method_aidl')
-    compile project(':eviacam_api')
-    compile project(':softkeyboard')
-    compile 'com.android.support:support-v4:23.+'
-    compile 'com.google.android.gms:play-services-analytics:8.3.0'
-    compile 'ch.acra:acra:4.9.2'
-    compile project(':WizarDroid:wizardroid')
+    implementation project(':opencv')
+    implementation project(':input_method_aidl')
+    implementation project(':eviacam_api')
+    implementation project(':softkeyboard')
+    implementation 'com.android.support:support-v4:27.+'
+    implementation 'com.google.android.gms:play-services-analytics:8.3.0'
+    implementation 'ch.acra:acra:4.9.2'
+    implementation project(':WizarDroid:wizardroid')
 }

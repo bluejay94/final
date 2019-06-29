@@ -1,12 +1,11 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 27
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 23
+        minSdkVersion 20
+        targetSdkVersion 27
     }
 
     dexOptions {
@@ -29,7 +28,7 @@ android {
 }
 
 dependencies {
-    compile project(':input_method_aidl')
-    compile 'com.android.support:support-v4:23.+'
-    compile 'ch.acra:acra:4.9.2'
+    implementation project(':input_method_aidl')
+    implementation 'com.android.support:support-v4:27.+'
+    implementation 'ch.acra:acra:4.9.2'
 }
