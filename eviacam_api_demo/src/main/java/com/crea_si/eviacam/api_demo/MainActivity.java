@@ -16,15 +16,21 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.GestureDetector;
+import android.widget.Toast;
 
 public class MainActivity extends Activity implements
         SlaveModeStatusListener, IGamepadEventListener,
-        IMouseEventListener, IDockPanelEventListener {
-    
+        IMouseEventListener, IDockPanelEventListener,GestureDetector.OnGestureListener {
+    public static final int SWIPE_THRESH = 100;
+    public static final int SWIPE_VELO_THRESH = 100;
+
+    private GestureDetector gestureDetector;
     private static final String TAG= "EVIACAM_API_DEMO";
     
     private static final float INC= 0.05f;
-    
+
+
     // slave mode remote facade
     private SlaveMode mSlaveMode;
 
@@ -34,6 +40,8 @@ public class MainActivity extends Activity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        gestureDetector = new GestureDetector(this);
     }
 
     @Override
@@ -173,6 +181,86 @@ public class MainActivity extends Activity implements
             Log.d(TAG, "Clack!");
         }
         event.recycle();
+
+
+    }
+
+    @Override
+    public boolean onDown(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public boolean onFling(MotionEvent downEvent, MotionEvent moveEvent, float velocityX, float velocityY) {
+        boolean result = false;
+        float diffY = moveEvent.getRawY() - downEvent.getRawY();
+        float diffX = moveEvent.getRawX() - downEvent.getRawX();
+        // which was greater?  movement across Y or X?
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+            // right or left swipe
+            if (Math.abs(diffX)> SWIPE_THRESH && Math.abs(velocityX) > SWIPE_VELO_THRESH) {
+                if (diffX > 0) {
+                    onSwipeRight();
+                } else {
+                    onSwipeLeft();
+                }
+                result = true;
+            }
+        } else {
+            // up or down swipe
+            if (Math.abs(diffY) > SWIPE_THRESH && Math.abs(velocityY)> SWIPE_VELO_THRESH) {
+                if (diffY > 0) {
+                    onSwipeBottom();
+                } else {
+                    onSwipeTop();
+                }
+                result = true;
+            }
+        }
+
+        return result;
+    }
+
+    private void onSwipeTop() {
+        Toast.makeText(this, "Swipe Top", Toast.LENGTH_LONG).show();
+    }
+
+    private void onSwipeBottom() {
+        Toast.makeText(this, "Swipe Bottom", Toast.LENGTH_LONG).show();
+    }
+
+    private void onSwipeLeft() {
+        Toast.makeText(this, "Swipe Left", Toast.LENGTH_LONG).show();
+    }
+
+    private void onSwipeRight() {
+        Toast.makeText(this, "Swipe Right", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        gestureDetector.onTouchEvent(event);
+        return super.onTouchEvent(event);
     }
 
     @Override
